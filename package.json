@@ -1,5 +1,5 @@
 {
-  "name": "axon-g",
+  "name": "axon-g-mcp",
   "version": "1.0.1",
   "description": "MCP Server para consultar documentación gestionada por axon-g-server",
   "main": "build/index.js",
