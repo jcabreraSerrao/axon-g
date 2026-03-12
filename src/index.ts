@@ -122,11 +122,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { versionNote, result } = data;
     const { score, exactVersion, category: resultCategory, file, chunkIndex: currChunk, totalChunks, hasMoreChunks, content } = result;
 
+    const safeCurrChunk = typeof currChunk === 'number' && !isNaN(currChunk) ? currChunk : 0;
+    const safeTotalChunks = typeof totalChunks === 'number' && !isNaN(totalChunks) ? totalChunks : 1;
+
     let responseText = `--- Búsqueda Semántica Exitosa ---\n`;
     responseText += `Nota de Versión: ${versionNote || exactVersion}\n`;
     responseText += `Archivo: ${file} (Relevancia: ${score})\n`;
-    responseText += `Categoría: ${resultCategory} | Chunk: ${currChunk + 1} de ${totalChunks}\n`;
-    responseText += `Tiene más chunks (puedes consultar chunkIndex ${currChunk + 1}): ${hasMoreChunks}\n`;
+    responseText += `Categoría: ${resultCategory} | Chunk: ${safeCurrChunk + 1} de ${safeTotalChunks}\n`;
+    responseText += `Tiene más chunks (puedes consultar chunkIndex ${safeCurrChunk + 1}): ${hasMoreChunks}\n`;
     responseText += `\n--- Contenido ---\n`;
     responseText += `${content}\n`;
 
