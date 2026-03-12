@@ -1,0 +1,26 @@
+{
+  "name": "axon-g",
+  "version": "1.0.0",
+  "description": "MCP Server para consultar documentación gestionada por axon-g-server",
+  "main": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js",
+    "dev": "tsc --watch"
+  },
+  "keywords": [
+    "mcp",
+    "typescript"
+  ],
+  "author": "Axon-G Team",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.0",
+    "axios": "^1.7.9"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "typescript": "^5.7.3"
+  }
+}
