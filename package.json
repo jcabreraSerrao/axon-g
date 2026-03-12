@@ -1,13 +1,20 @@
 {
-  "name": "axon-g",
-  "version": "1.0.0",
+  "name": "axon-g-mcp",
+  "version": "1.0.1",
   "description": "MCP Server para consultar documentación gestionada por axon-g-server",
   "main": "build/index.js",
   "type": "module",
+  "bin": {
+    "axon-g": "build/index.js"
+  },
+  "files": [
+    "build"
+  ],
   "scripts": {
     "build": "tsc",
     "start": "node build/index.js",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "mcp",

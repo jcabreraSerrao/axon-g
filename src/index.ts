@@ -34,32 +34,32 @@ const server = new Server(
 const QUERY_DOCUMENTATION_TOOL: Tool = {
   name: "query_documentation",
   description:
-    "Busca y recupera documentación técnica (guías, APIS, tutoriales, changelogs, código de ejemplo) indexada en el backend axon-g-server. " +
-    "Úsala SIEMPRE que necesites responder con precisión a preguntas sobre cómo usar una librería técnica específica, sus comandos, sintaxis, o arquitecturas. " +
-    "Al usar esta tool, el motor semántico buscará el fragmento más relevante en la documentación oficial guardada. IMPORTANTE: Si la respuesta indica 'hasMoreChunks: true', significa que la documentación es larga; puedes hacer otra iteración usando el mismo 'query' pero incrementando 'chunkIndex' para seguir leyendo. Si no conoces el nombre exacto de la librería, consúltale al usuario.",
+    "Searches and retrieves technical documentation (guides, APIs, tutorials, changelogs, code examples) indexed in the axon-g-server backend. " +
+    "ALWAYS use this when you need to accurately answer questions about how to use a specific technical library, its commands, syntax, or architecture. " +
+    "When using this tool, the semantic engine will search for the most relevant chunk in the saved official documentation. IMPORTANT: If the response indicates 'hasMoreChunks: true', it means the documentation is long; you can make another iteration using the exact same 'query' but incrementing 'chunkIndex' to continue reading. If you don't know the exact name of the library, ask the user.",
   inputSchema: {
     type: "object",
     properties: {
       query: {
         type: "string",
-        description: "Pregunta específica o término de búsqueda (ej. 'Cómo configurar un guard', 'execution context').",
+        description: "Specific question or search term (CRITICAL: MUST ALWAYS BE IN ENGLISH, e.g., 'How to configure a guard', 'execution context internals').",
       },
       library: {
         type: "string",
-        description: "Nombre exacto de la librería/framework (ej. 'nestjs', 'tanstack-query', 'react').",
+        description: "Exact name of the library/framework (e.g., 'nestjs', 'tanstack-query', 'react').",
       },
       version: {
         type: "string",
-        description: "Versión de la librería a consultar (ej. '10', '18.2.0').",
+        description: "Version of the library to query (e.g., '10', '18.2.0').",
       },
       category: {
         type: "string",
         enum: ["guide", "api", "tutorial", "reference", "changelog", "example", "other"],
-        description: "Infiere y usa esto para filtrar la respuesta. Ej: Si el usuario pide teoría, usa 'guide'. Si pide código o firmas de funciones, usa 'api' o 'example'.",
+        description: "Infer and use this to filter the response. E.g.: If the user asks for theory, use 'guide'. If they ask for code or function signatures, use 'api' or 'example'.",
       },
       chunkIndex: {
         type: "number",
-        description: "Índice de paginación de chunks (0 por defecto). Úsalo solo si la llamada anterior devolvió hasMoreChunks: true.",
+        description: "Pagination index for chunks (defaults to 0). Use it only if the previous call returned hasMoreChunks: true.",
       },
     },
     required: ["query", "library", "version"],

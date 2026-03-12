@@ -1,47 +1,44 @@
 # Axon-G (MCP Server)
 
-Servidor **Model Context Protocol (MCP)** para consultar contextualmente documentación de componentes y librerías técnica. 
-Este servidor es un puente que permite a las IAs (Claude, Editores con soporte MCP) comunicarse con el motor semántico alojado en `axon-g-server`.
+Servidor **Model Context Protocol (MCP)** consumible vía `npx` para consultar contextualmente documentación de componentes y librerías técnicas. 
+Este servidor actúa como un puente, permitiendo a las IAs (Claude, Editores con soporte MCP) comunicarse con el motor semántico alojado en un `axon-g-server` externo o local.
 
-## Requisitos
-- Node.js (≥ 18)
-- Motor backend (`axon-g-server`) en ejecución, accesible de manera local o remota.
+## Configuración en Clientes MCP (Modo Rápido vía NPX)
 
-## Instalación y Construcción
-1. Clona el repositorio:
-   ```bash
-   git clone https://github.com/jcabreraSerrao/axon-g.git
-   cd axon-g
-   ```
-2. Instala las dependencias:
-   ```bash
-   npm install
-   ```
-3. Configura las variables de entorno. Copia la plantilla y rellena tus datos:
-   ```bash
-   cp .env.example .env
-   ```
-   > Asegúrate de definir `AXON_G_SERVER_URL` y `AXON_G_API_KEY` correctamente en el `.env`.
+Al estar publicado (o vinculable) en NPM, no necesitas clonar el repositorio y correr `node` manualmente. Puedes hacer que tu cliente MCP lo descargue y ejecute "al vuelo".
 
-4. Compila el código TypeScript:
-   ```bash
-   npm run build
-   ```
+### 1. VS Code (Antigravity / RooCode / Cursor)
+Edita el archivo de configuración de MCP (generalmente en la UI del editor o en tu `.vscode/settings.json`) usando estos valores:
 
----
+* **Command**: `npx`
+* **Args**: `["-y", "axon-g-mcp"]`
+* **Env (Variables de entorno requeridas)**:
+  - `AXON_G_SERVER_URL`: `http://localhost:3000` *(o tu URL de producción)*
+  - `AXON_G_API_KEY`: `tu_api_key_aqui`
 
-## Configuración en Clientes MCP
+En Antigravity o editores similares, el JSON luciría algo así:
+```json
+"axon-g": {
+  "command": "npx",
+  "args": ["-y", "axon-g-mcp"],
+  "env": {
+    "AXON_G_SERVER_URL": "http://localhost:3000",
+    "AXON_G_API_KEY": "tu_api_key_del_server"
+  }
+}
+```
 
-### 1. Claude Desktop
-Añade el siguiente bloque al archivo de configuración de Claude Desktop (ubicado usualmente en `~/Library/Application Support/Claude/claude_desktop_config.json` o `%APPDATA%\\Claude\\claude_desktop_config.json`):
+### 2. Claude Desktop
+Añade el siguiente bloque al archivo de configuración de Claude Desktop:
 
 ```json
 {
   "mcpServers": {
     "axon-g": {
-      "command": "node",
+      "command": "npx",
       "args": [
-        "/ruta/absoluta/a/axon-g/build/index.js"
+        "-y",
+        "axon-g-mcp"
       ],
       "env": {
         "AXON_G_SERVER_URL": "http://localhost:3000",
@@ -52,8 +49,34 @@ Añade el siguiente bloque al archivo de configuración de Claude Desktop (ubica
 }
 ```
 
-### 2. VS Code (Antigravity / Editores Cursor/RooCode)
-Dependiendo de la extensión o IDE, la configuración se realiza directamente en un archivo de ajustes JSON (a veces `.vscode/settings.json` o en la UI del panel MCP). El comando base es el mismo:
+---
 
-* **Comando:** `node /ruta/absoluta/a/axon-g/build/index.js`
-* **Variables de entorno:** Configura explícitamente `AXON_G_SERVER_URL` y `AXON_G_API_KEY` en la sección de environment del cliente, para que se pasen al proceso Node del servidor.
+## Desarrollo Local / Compilación Manual
+
+Si deseas contribuir al código o correrlo compilándolo tú mismo:
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/jcabreraSerrao/axon-g.git
+   cd axon-g
+   ```
+2. Instala dependencias y compila:
+   ```bash
+   npm install
+   npm run build
+   ```
+3. Ahora puedes usar el comando local desde el build (pasando envs):
+   ```bash
+   AXON_G_SERVER_URL="..." AXON_G_API_KEY="..." node build/index.js
+   ```
+
+## Publicar a NPM
+
+*(Comando interno para administradores)*
+```bash
+# Validar que estás logueado en npm
+npm login
+
+# Ejecuta los test/build y publica el CLI para uso npx
+npm publish
+```
